@@ -1,0 +1,3 @@
+Upload paytm.apk in this same folder (public/apks/).
+Exact file name: paytm.apk
+The Add Wallet download button then serves /apks/paytm.apk automatically.

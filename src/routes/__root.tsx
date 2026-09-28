@@ -7,32 +7,34 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { StoreProvider } from '@/lib/store';
+import { ToastProvider } from "../lib/toast";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { captureRefFromUrl } from "../lib/referral";
+import { openExternalUrl } from "../lib/nativeBridge";
+import AppLoading from "../components/AppLoading";
+import { SIGN_IN_SUCCESS_EVENT } from "../lib/authFeedback";
+import { isInstallHost } from "../lib/brand";
+import AppSplash from "../components/AppSplash";
 
+let launchSplashCompleted = false;
+
+/**
+ * Any unknown URL (old website links, /register variants, typos) goes straight
+ * to the landing page instead of showing a "Page not found" error.
+ */
 function NotFoundComponent() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.pathname !== "/") {
+      window.location.replace("/");
+    }
+  }, []);
+  return null;
 }
+
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
@@ -77,21 +79,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Skypay" },
+      { name: "description", content: "Skypay — earn money online with easy tasks." },
+      { name: "author", content: "Skypay" },
+      { property: "og:title", content: "Skypay" },
+      { property: "og:description", content: "Skypay — earn money online with easy tasks." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", type: "image/png", href: "/favicon.png?v=3" },
+      { rel: "apple-touch-icon", sizes: "192x192", href: "/app-icon-192.png?v=3" },
+      { rel: "manifest", href: "/manifest.webmanifest?v=3" },
     ],
   }),
   shellComponent: RootShell,
@@ -116,11 +127,75 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  const [showLaunchSplash, setShowLaunchSplash] = useState(
+    () => !launchSplashCompleted && !isInstallHost(),
+  );
+  const [showSignInSuccess, setShowSignInSuccess] = useState(false);
+
+  const finishLaunchSplash = useCallback(() => {
+    launchSplashCompleted = true;
+    setShowLaunchSplash(false);
+  }, []);
+
+  // Capture ?ref=CODE on ANY page and keep it on the device so the referral
+  // survives the SMS/OTP registration steps.
+  useEffect(() => {
+    captureRefFromUrl();
+    return router.subscribe('onResolved', () => {
+      captureRefFromUrl();
+    });
+  }, [router]);
+
+  useEffect(() => {
+    let timer: number | undefined;
+    const showSuccess = () => {
+      setShowSignInSuccess(true);
+      if (timer !== undefined) window.clearTimeout(timer);
+      timer = window.setTimeout(() => setShowSignInSuccess(false), 1000);
+    };
+    window.addEventListener(SIGN_IN_SUCCESS_EVENT, showSuccess);
+    return () => {
+      window.removeEventListener(SIGN_IN_SUCCESS_EVENT, showSuccess);
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }, []);
+
+  // App-wide safety net: ANY link that points outside this site is handed to
+  // the real browser (Chrome on Android) instead of opening a tab inside the
+  // wrapper app, which used to relaunch the app when the user pressed back.
+  useEffect(() => {
+    const onDocumentClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey) return;
+      const anchor = (event.target as HTMLElement | null)?.closest?.('a');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href') || '';
+      if (!href || href.startsWith('#')) return;
+      if (anchor.hasAttribute('download')) return;
+      let external = false;
+      try {
+        external = new URL(href, window.location.href).origin !== window.location.origin;
+      } catch {
+        return;
+      }
+      if (!external) return;
+      event.preventDefault();
+      openExternalUrl(anchor.href);
+    };
+    document.addEventListener('click', onDocumentClick, true);
+    return () => document.removeEventListener('click', onDocumentClick, true);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <ToastProvider>
+        <StoreProvider>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+          {showLaunchSplash && <AppSplash onFinish={finishLaunchSplash} />}
+           {showSignInSuccess && <AppLoading label="Signed in" success />}
+        </StoreProvider>
+      </ToastProvider>
     </QueryClientProvider>
   );
 }

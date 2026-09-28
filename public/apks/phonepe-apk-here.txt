@@ -1,0 +1,3 @@
+Upload phonepe.apk in this same folder (public/apks/).
+Exact file name: phonepe.apk
+The Add Wallet download button then serves /apks/phonepe.apk automatically.

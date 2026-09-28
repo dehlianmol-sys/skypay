@@ -30,3 +30,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# .env is intentionally NOT ignored: the project must keep working
+# after a GitHub download / ZIP copy. Values are also baked into
+# src/config/app-config.ts as a fallback.
+# .env
