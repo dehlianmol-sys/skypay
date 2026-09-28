@@ -135,7 +135,7 @@ export default function AppSplash({ onFinish }: { onFinish?: () => void }) {
               <div className="card-texture" aria-hidden="true" />
               <div className="card-fold" aria-hidden="true" />
               <div className="logo-tile">
-                <CachedImage src={APP_LOGO} fallbackSrc={APP_LOGO_FALLBACK} cacheKey="app-logo-v2" alt="Skypay" draggable={false} />
+                <img src="/brand/logo.png" alt="ComePay" className="w-24 h-auto object-contain" fetchPriority="high" decoding="sync" loading="eager" draggable={false} />
               </div>
             </div>
           </div>

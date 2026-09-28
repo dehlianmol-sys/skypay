@@ -125,7 +125,13 @@ export interface TxCardProps {
   onCopy?: (orderCode: string) => void;
 }
 
-/** Image-based transaction card. All art, badges and labels come from the template images. */
+const STATUS_STYLE: Record<TxStatus, { label: string; cls: string; icon: string }> = {
+  failed: { label: 'Failed', cls: 'bg-[#FF4D4F]', icon: 'x' },
+  succeed: { label: 'Succeed', cls: 'bg-[#00875A]', icon: 'check' },
+  pending: { label: 'Pending', cls: 'bg-[#F5A623]', icon: 'clock' },
+};
+
+/** Clean white transaction card. */
 export default function TxCard({
   type,
   status,
@@ -136,81 +142,59 @@ export default function TxCard({
   onPay,
   onCopy,
 }: TxCardProps) {
-  const template = TEMPLATES[type][status];
-  const [imageWidth, imageHeight] = template.size;
-  const [cropX, cropY, cropWidth, cropHeight] = template.crop;
   const marks = stamp(createdAt);
-  const readable = status.charAt(0).toUpperCase() + status.slice(1);
-  const [iconX, iconY, iconWidth, iconHeight] = template.copy;
-
-  const cardStyle: CSSProperties = {
-    aspectRatio: `${cropWidth} / ${cropHeight}`,
-    backgroundImage: `url("${template.url}")`,
-    backgroundSize: `${(imageWidth / cropWidth) * 100}% ${(imageHeight / cropHeight) * 100}%`,
-    backgroundPosition:
-      `${(cropX / (imageWidth - cropWidth)) * 100}% ` +
-      `${(cropY / (imageHeight - cropHeight)) * 100}%`,
-  };
+  const badge = STATUS_STYLE[status];
+  const payable = type === 'purchase' && status === 'pending' && !!onPay;
 
   return (
     <article
-      className="transaction-card"
+      className={`relative rounded-2xl border border-gray-100 bg-white p-4 shadow-sm ${payable ? 'cursor-pointer' : ''}`}
       data-status={status}
       data-order-code={orderCode}
-      style={cardStyle}
-      aria-label={`${type === 'purchase' ? 'Purchase' : 'Receive'}, ${amountText(amount)}, ${readable}, order ${orderCode}`}
+      onClick={payable ? onPay : undefined}
+      aria-label={`${type === 'purchase' ? 'Purchase' : 'Receive'}, ${amountText(amount)}, ${badge.label}, order ${orderCode}`}
     >
-      <span className="dynamic-field amount" style={fieldStyle(template.amount, template.crop)}>
-        {amountText(amount)}
-      </span>
-      {type === 'purchase' && template.reward && (
-        <span className="dynamic-field reward" style={fieldStyle(template.reward, template.crop)}>
-          {`+ ∫ ${reward.toFixed(2)}`}
+      <div className="flex items-start justify-between gap-2">
+        <span className="flex items-center gap-1 text-2xl font-bold text-[#00875A] tabular-nums">+ ∫ {amountText(amount)}</span>
+        <span className={`flex shrink-0 items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-white ${badge.cls}`}>
+          <span className="grid h-3.5 w-3.5 place-items-center rounded-full bg-white/30">
+            <svg viewBox="0 0 12 12" className="h-2 w-2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+              {badge.icon === 'x' && <path d="M3 3l6 6M9 3L3 9" />}
+              {badge.icon === 'check' && <path d="M2.5 6.5l2.5 2.5 4.5-5" />}
+              {badge.icon === 'clock' && <path d="M6 3v3l2 1" />}
+            </svg>
+          </span>
+          {badge.label}
         </span>
-      )}
-      <span
-        className="dynamic-field order-code"
-        style={{
-          ...fieldStyle(template.order, template.crop),
-          // Keep the dynamic order text strictly before the printed copy icon.
-          width: `${((iconX - template.order[0] - 5) / cropWidth) * 100}%`,
-        }}
-      >
-        {orderCode}
-      </span>
-      <span className="dynamic-field timestamp" style={fieldStyle(template.time, template.crop)}>
-        {marks.time}
-      </span>
-      <span className="dynamic-field timestamp" style={fieldStyle(template.date, template.crop)}>
-        {marks.date}
-      </span>
-
-      {type === 'purchase' && status === 'pending' && onPay && (
-        <button
-          type="button"
-          className="payment-hitbox"
-          aria-label={`Continue payment for order ${orderCode}, ${amountText(amount)}`}
-          onClick={onPay}
-        />
-      )}
-
-      <button
-        type="button"
-        className="copy-hitbox"
-        title="Copy order code"
-        aria-label={`Copy order code ${orderCode}`}
-        style={{
-          left: `${((iconX - cropX) / cropWidth) * 100}%`,
-          top: `${((iconY - cropY) / cropHeight) * 100}%`,
-          width: `${(iconWidth / cropWidth) * 100}%`,
-          height: `${(iconHeight / cropHeight) * 100}%`,
-        }}
-        onClick={(event) => {
-          event.stopPropagation();
-          void navigator.clipboard?.writeText(orderCode).catch(() => undefined);
-          onCopy?.(orderCode);
-        }}
-      />
+      </div>
+      <div className="mt-2 flex items-end justify-between gap-2">
+        <div className="min-w-0 space-y-1.5">
+          {type === 'purchase' && (
+            <p className="text-sm font-semibold text-gray-700">Reward: <span className="text-[#2864B4]">+ ∫ {reward.toFixed(2).replace(/\.00$/, '')}</span></p>
+          )}
+          <div className="flex items-center gap-1.5 text-sm font-semibold text-gray-800">
+            <span>Order Code:</span>
+            <button
+              type="button"
+              title="Copy order code"
+              aria-label={`Copy order code ${orderCode}`}
+              className="flex items-center gap-1 rounded bg-[#E8F3ED] px-2 py-0.5 font-mono text-xs text-gray-700"
+              onClick={(event) => {
+                event.stopPropagation();
+                void navigator.clipboard?.writeText(orderCode).catch(() => undefined);
+                onCopy?.(orderCode);
+              }}
+            >
+              {orderCode}
+              <svg viewBox="0 0 16 16" className="h-3 w-3 text-[#00875A]" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><rect x="4" y="2" width="9" height="12" rx="1.5" /><path d="M6.5 6h4M6.5 9h4" /></svg>
+            </button>
+          </div>
+        </div>
+        <div className="shrink-0 text-right text-xs font-semibold text-gray-500 tabular-nums">
+          <p>{marks.time}</p>
+          <p className="mt-1">{marks.date}</p>
+        </div>
+      </div>
     </article>
   );
 }
