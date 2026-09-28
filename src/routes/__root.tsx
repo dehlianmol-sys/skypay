@@ -190,10 +190,15 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <StoreProvider>
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-          {showLaunchSplash && <AppSplash onFinish={finishLaunchSplash} />}
-           {showSignInSuccess && <AppLoading label="Signed in" success />}
+          {showLaunchSplash ? (
+            <AppSplash onFinish={finishLaunchSplash} />
+          ) : (
+            <>
+              {/* Mount routes only after the cold-launch intro, while StoreProvider preloads data behind it. */}
+              <Outlet />
+              {showSignInSuccess && <AppLoading label="Signed in" success />}
+            </>
+          )}
         </StoreProvider>
       </ToastProvider>
     </QueryClientProvider>
