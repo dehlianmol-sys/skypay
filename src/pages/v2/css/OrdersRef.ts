@@ -30,30 +30,34 @@ export const css = `
       padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
     }
     .page-header {
-      position: relative;
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: center;
       height: max(78px, calc(56px + env(safe-area-inset-top, 0px)));
       padding-top: env(safe-area-inset-top, 0px);
       background: #fff;
     }
-    .page-title { margin: 0; color: var(--green); font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; font-size: 21px; line-height: 26px; font-weight: 800; }
+    .page-title { grid-column: 2; margin: 0; color: var(--green); font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; font-size: 21px; line-height: 26px; font-weight: 800; white-space: nowrap; }
     .back-button {
-      position: absolute;
-      left: 6px;
-      bottom: 6px;
+      grid-column: 1;
+      justify-self: start;
+      margin-left: 6px;
       width: 46px;
       height: 44px;
       padding: 0;
       border: 0;
       background: transparent;
       color: var(--green);
-      font-size: 32px;
+      font-size: 34px;
       line-height: 1;
-      font-weight: 400;
+      font-weight: 700;
     }
-    main { padding: 10px var(--gutter) 0; }
+    main {
+      max-width: 380px;
+      width: 100%;
+      margin-inline: auto;
+      padding: 10px var(--gutter) 0;
+    }
     .main-tabs {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -123,25 +127,33 @@ export const css = `
     .balance-details > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .balance-details dt { color: #def0e5; font-size: 16px; }
     .balance-details dd { margin: 0; white-space: nowrap; font-size: 18px; font-weight: 700; }
-    .currency-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 13px; }
+    .currency-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      height: 46px;
+      margin-top: 13px;
+      padding: 4px;
+      border: 0;
+      border-radius: 999px;
+      background: #E8F3ED;
+    }
     .currency-tab {
-      min-height: 38px;
-      padding: 7px 12px;
-      border: 1px solid #c6ded8;
-      border-radius: 22px;
-      background: #e7f1ee;
-      color: #6f9e90;
+      min-width: 0;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #389a7b;
       font-size: 16px;
       line-height: 22px;
       font-weight: 800;
-      box-shadow: inset 0 1px 3px #43886f0a;
       transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease;
     }
     .currency-tab[aria-selected="true"] {
-      border-color: var(--green);
-      background: var(--green);
-      color: #fff;
-      box-shadow: 0 4px 14px #0f8a5f33;
+      background: #fff;
+      color: #00875A;
+      box-shadow: 0 2px 5px #1c4d3a1a;
     }
     .orders-container { position: relative; display: flow-root; min-width: 0; }
     .empty-state { margin: 8px 0 0; text-align: center; color: #82868c; font-size: 14px; line-height: 20px; font-weight: 400; }
