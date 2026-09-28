@@ -40,3 +40,4 @@
 - [x] Pre-cache Home and Payment while the one-time root splash is visible.
 - [x] Restore the full-screen notice banner layout.
 - [x] Verify smooth Payment/Home navigation without replaying the splash.
+- [x] Prevent notices and loading feedback from interrupting the one-time launch splash.
