@@ -40,7 +40,7 @@ export default function AuthShell({
       <style dangerouslySetInnerHTML={{ __html: AUTH_CSS }} />
       <div className="auth-card">
         <div className="brand">
-          <CachedImage src={APP_LOGO} fallbackSrc={APP_LOGO_FALLBACK} cacheKey="app-logo-v2" alt={`${APP_NAME} logo`} />
+          <img src="/brand/logo.png" alt="ComePay" className="w-24 h-auto object-contain" fetchPriority="high" decoding="sync" loading="eager" draggable={false} />
         </div>
         <h1>{title}</h1>
         <p className="auth-intro">{intro}</p>

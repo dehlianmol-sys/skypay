@@ -110,7 +110,7 @@ export default function AppSplash({ onFinish }: { onFinish?: () => void }) {
         <div className="splash-content">
           <div className="splash-orbit">
             <span className="spinner" aria-hidden="true" />
-            <img className="splash-logo" src={APP_LOGO_FALLBACK} alt="" draggable={false} fetchPriority="high" />
+            <img className="splash-logo" src="/brand/logo.png" alt="" draggable={false} fetchPriority="high" />
           </div>
           <h1 className="splash-title">Skypay</h1>
         </div>
