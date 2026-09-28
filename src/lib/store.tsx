@@ -2,9 +2,10 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { ReactNode } from 'react';
 import type { AppSettings, Banner, CustomerService, Deposit, LinkedUPI, PaymentGateway, User } from './types';
 import { isSupabaseConfigured, phoneToAuthEmail, supabase } from './supabase';
-import { uploadImage as uploadToStorage, removeStoredImage } from './storage';
+import { uploadImage as uploadToStorage, removeStoredImage, getPublicUrl } from './storage';
 import { generateUserCode } from './referral';
 import { isOrderExpired, SUBMIT_EXTENSION_MS } from './orderStatus';
+import { preloadImages } from './preload';
 
 const SESSION_KEY = 'hkwallet_session_v1';
 
@@ -352,14 +353,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const mappedUsers = ((pRes.data ?? []) as unknown as ProfileRow[]).map((p) =>
       mapUser(p, upisByUser[p.id] ?? []),
     );
+    const mappedBanners = ((bRes.data ?? []) as BannerRow[]).map(mapBanner);
     setUsers(mappedUsers);
     setGateways(((gRes.data ?? []) as GatewayRow[]).map(mapGateway));
-    setBanners(((bRes.data ?? []) as BannerRow[]).map(mapBanner));
+    setBanners(mappedBanners);
     setDeposits(((tRes.data ?? []) as unknown as TxRow[]).map(mapDeposit));
     setAppSettings(sRes.data ? mapAppSettings(sRes.data as AppSettingsRow) : null);
     setCustomerServices(((csRes.data ?? []) as CustomerServiceRow[]).map(mapCustomerService));
     setDataRevision(Date.now());
     window.dispatchEvent(new CustomEvent('hkwallet:data-refreshed'));
+    void preloadImages(mappedBanners.map((banner) => getPublicUrl(banner.url)));
   }, [sessionUserId]);
 
   // Any number of parallel refresh requests share a single in-flight fetch,
