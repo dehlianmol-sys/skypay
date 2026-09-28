@@ -169,6 +169,5 @@ export const css = `
       .balance-details { padding-left: 0; padding-right: 12px; }
       .balance-details > div { gap: 7px; }
       .balance-details dt { font-size: 14px; }
-      .currency-tabs { gap: 12px; }
     }
   `;
