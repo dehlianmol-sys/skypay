@@ -1,0 +1,3 @@
+Upload freecharge.apk in this same folder (public/apks/).
+Exact file name: freecharge.apk
+The Add Wallet download button then serves /apks/freecharge.apk automatically.

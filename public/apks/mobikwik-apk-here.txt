@@ -1,0 +1,3 @@
+Upload mobikwik.apk in this same folder (public/apks/).
+Exact file name: mobikwik.apk
+The Add Wallet download button then serves /apks/mobikwik.apk automatically.

@@ -1,0 +1,9 @@
+export const css = `
+.service-app{--service-green:#0f8f5f;min-height:100dvh;background:#f6f9fe;color:#202d3d;font-family:Poppins,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.service-app *{box-sizing:border-box}.service-header{position:sticky;top:0;z-index:10;height:56px;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.service-back{position:absolute;left:12px;width:44px;height:44px;display:grid;place-items:center;border:0;background:transparent;color:var(--service-green)}.service-back svg{width:24px;height:24px}
+.service-title{color:#0aa060;font-size:19px;font-weight:700}.service-content{padding:16px}.service-card{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;padding:12px 16px;border-radius:16px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.service-left{display:flex;align-items:center;min-width:0;flex:1}.service-icon{width:44px;height:44px;display:grid;place-items:center;flex:0 0 44px;border-radius:50%;overflow:hidden}.service-icon img{width:100%;height:100%;object-fit:cover}.service-icon svg{width:25px;height:25px}.service-icon.telegram{background:#29a9ea;color:#fff}.service-icon.whatsapp{background:#25d366;color:#fff}.service-icon.headset{background:#eef1f5;color:var(--service-green)}
+.service-copy{min-width:0;margin-left:12px}.service-name{overflow:hidden;color:#202d3d;font-size:15px;font-weight:700;white-space:nowrap;text-overflow:ellipsis}.service-description{overflow:hidden;margin-top:4px;color:#7c8ca0;font-size:12px;white-space:nowrap;text-overflow:ellipsis}
+.service-contact{flex:0 0 auto;min-height:32px;padding:8px 18px;border:0;border-radius:10px;background:var(--service-green);color:#fff;font-size:13px;font-weight:700}.service-empty{padding:72px 24px;text-align:center;color:#7c8ca0;font-size:14px}
+`;

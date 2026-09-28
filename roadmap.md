@@ -1,0 +1,42 @@
+- [x] Make the splash logo appear immediately and rebalance the two splash phases.
+- [x] Keep the signed-in success treatment visible through the authentication redirect.
+- [x] Diagnose the Cloudflare/custom-domain status.
+# Roadmap
+
+- [x] Fix Order modal text flow and mobile back-control sizing.
+- [x] Fix wallet provider text, numbered instructions, and phone progression.
+- [x] Share the Statistics-style customer-service control across signed-in pages except My.
+- [x] Keep Roboto only on primary titles, amounts, and headline metrics.
+- [x] Keep payment values on clean lines and center wide error messages.
+- [x] Validate registration, OTP, navigation, wallet, payment, and support flows.
+- [x] Confirm clean build and database connectivity.
+- [x] Store landing, loading, statistics, and support artwork inside the project for GitHub and Vercel.
+- [x] Restore the supplied loading animation and exact daily reward tiers.
+- [x] Make customer service movable and foldable without changing its destination.
+- [x] Reduce oversized PIN, UPI, and registration loading overlays.
+- [x] Verify the repaired screens at mobile size and confirm a clean build.
+- [x] Upload every admin/user image at its original quality with no client compression.
+- [x] Keep live database data synchronized through realtime, resume refresh, and cache bypassing.
+- [x] Add pull-to-refresh to signed-in app screens without changing their existing layouts.
+- [x] Replace only the browser/link identity icon with the supplied HK Wallet logo.
+- [x] Verify image upload, realtime refresh, pull gesture, resume refresh, and favicon behavior.
+- [x] Support Supabase connection variables consistently across local preview and Vercel.
+- [x] Add admin-managed tutorial screenshots and timed Chrome handoff for wallet APK installs.
+- [x] Point all wallet downloads at the `app.apk` release with exact filenames and remove the failing Chrome intent.
+- [x] Auto-open the download tutorial after three seconds and add an admin-managed Submit tutorial before phone entry.
+- [x] Force wallet APK MediaFire links into the external Android Chrome app instead of an in-app WebView tab.
+- [x] Send every outside link (support, share, tutorials, downloads) to the external browser app-wide.
+- [x] Remove the yellow home-banner flash and show only uploaded banner imagery.
+- [x] Raise the leaderboard notice title slightly without adding a timer.
+- [x] Reduce avoidable home-screen image/network work and verify responsiveness.
+- [x] Apply Roboto consistently across user-facing screens.
+- [x] Shorten cold-start loading and remove the extra startup delay.
+- [x] Reuse centrally loaded banners and reduce avoidable rerenders.
+- [x] Replace duplicate sign-in loading with one confirmation and restore the animated launch screen.
+- [x] Unify every user/admin loading state with the reference sign-in overlay.
+- [x] Match Home layout, rewards, leaderboard, and transactions to the supplied app screenshots.
+- [x] Prevent partially rendered images and verify mobile behavior.
+- [x] Match the loading and signed-in overlays to the supplied references.
+- [x] Pre-cache Home and Payment while the one-time root splash is visible.
+- [x] Restore the full-screen notice banner layout.
+- [x] Verify smooth Payment/Home navigation without replaying the splash.
