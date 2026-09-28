@@ -128,9 +128,27 @@ export const css = `
     .balance-details dt { color: #def0e5; font-size: 16px; }
     .balance-details dd { margin: 0; white-space: nowrap; font-size: 18px; font-weight: 700; }
     .currency-tabs {
+      position: relative;
+      isolation: isolate;
       display: flex;
       gap: 16px;
       margin: 15px 0 0;
+    }
+    .currency-tabs::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0 auto 0 0;
+      width: calc((100% - 16px) / 2);
+      border: 1px solid #a9d2c3;
+      border-radius: 999px;
+      background: #d9e9e1;
+      transform: translateX(0);
+      transition: transform 280ms cubic-bezier(.22, 1, .36, 1);
+      will-change: transform;
+    }
+    .currency-tabs:has(#usdt-tab[aria-selected="true"])::before {
+      transform: translateX(calc(100% + 16px));
     }
     .currency-tab {
       flex: 1;
@@ -152,10 +170,13 @@ export const css = `
       background: #f2f8f5;
     }
     .currency-tab[aria-selected="true"] {
-      background: #d9e9e1;
-      border-color: #b8d5c6;
+      background: transparent;
+      border-color: transparent;
       color: #15803d;
       box-shadow: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .currency-tabs::before { transition: none; }
     }
     .orders-container { position: relative; display: flow-root; min-width: 0; }
     .empty-state { margin: 8px 0 0; text-align: center; color: #82868c; font-size: 14px; line-height: 20px; font-weight: 400; }
