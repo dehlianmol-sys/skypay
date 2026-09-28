@@ -3,7 +3,6 @@ import { Link, useNavigate } from '@/lib/router-compat';
 import { useStore } from '@/lib/store';
 import { useToast } from '@/lib/toast';
 import { APP_LOGO, APP_LOGO_FALLBACK } from '@/lib/brand';
-import CachedImage from '@/components/CachedImage';
 import AuthHints, { phoneRules, passwordRules, isInvalid } from '@/components/AuthHints';
 import AppLoading from '@/components/AppLoading';
 import { showSignInSuccess } from '@/lib/authFeedback';

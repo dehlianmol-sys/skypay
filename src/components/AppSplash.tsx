@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { APP_LOGO, APP_LOGO_FALLBACK } from '@/lib/brand';
 import { preloadAppShell } from '@/lib/preload';
-import CachedImage from '@/components/CachedImage';
 const WAVE_IMG_URL = '/ui/loading-wave.png';
 
 /* Copied from the supplied Skypay loading screen: splash spinner -> ripple onboarding reveal. */

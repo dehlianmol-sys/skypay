@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { APP_LOGO, APP_LOGO_FALLBACK, APP_NAME } from '../lib/brand';
-import CachedImage from '@/components/CachedImage';
 
 /* Auth UI styles taken from the buddy-connect-hub reference, scoped to .bch-auth */
 const AUTH_CSS = `
