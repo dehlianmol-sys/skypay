@@ -4,7 +4,7 @@ type AppLoadingProps = {
 };
 
 const css = `
-.skypay-loading-layer{position:fixed;inset:0;z-index:120;display:grid;place-items:center;pointer-events:none;background:transparent;font-family:Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.skypay-loading-layer{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;pointer-events:none;background:transparent;font-family:Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 .skypay-loading-box{width:128px;height:128px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border-radius:12px;background:rgb(64 64 64 / 95%);color:#fff;font-size:16px;font-weight:400;line-height:1}
 .skypay-loading-spinner{width:36px;height:36px;border:2px solid rgb(255 255 255 / 25%);border-top-color:#fff;border-radius:50%;animation:skypay-loader-spin .8s linear infinite}
 .skypay-loading-check{width:44px;height:34px;fill:none;stroke:currentColor;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
