@@ -159,4 +159,13 @@ export const css = `
       .balance-details dt { font-size: 14px; }
       .currency-tabs { gap: 12px; }
     }
-  `;
+  
+    /* Tight mobile layout + pastel pill toggles */
+    main { max-width: 28rem; margin: 0 auto; width: 100%; padding: 12px 16px 8px !important; background: transparent; }
+    .main-tabs, .currency-tabs { display: flex !important; width: 100%; max-width: 320px; margin: 12px auto 0; padding: 4px !important; gap: 0 !important; border: 0 !important; border-radius: 9999px !important; background: #E3EFE9 !important; box-shadow: none !important; height: auto !important; }
+    .main-tabs { margin-top: 0; }
+    .main-tab, .currency-tab { flex: 1; height: auto !important; min-height: 0 !important; padding: 6px 0 !important; border: 0 !important; border-radius: 9999px !important; background: transparent !important; color: #00875A !important; font-weight: 500 !important; font-size: 15px !important; box-shadow: none !important; text-align: center; }
+    .main-tab[aria-selected="true"], .currency-tab[aria-selected="true"] { background: #00875A !important; color: #fff !important; font-weight: 600 !important; box-shadow: 0 1px 2px rgb(0 0 0 / 12%) !important; }
+    .balance-card { margin-top: 12px !important; }
+    .transaction-list { width: 100% !important; margin: 12px 0 0 !important; gap: 12px !important; }
+`;

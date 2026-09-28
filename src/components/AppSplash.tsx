@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { APP_LOGO, APP_LOGO_FALLBACK } from '@/lib/brand';
 import { preloadAppShell } from '@/lib/preload';
-import CachedImage from '@/components/CachedImage';
 const WAVE_IMG_URL = '/ui/loading-wave.png';
 
 /* Copied from the supplied Skypay loading screen: splash spinner -> ripple onboarding reveal. */
@@ -110,7 +109,7 @@ export default function AppSplash({ onFinish }: { onFinish?: () => void }) {
         <div className="splash-content">
           <div className="splash-orbit">
             <span className="spinner" aria-hidden="true" />
-            <img className="splash-logo" src={APP_LOGO_FALLBACK} alt="" draggable={false} fetchPriority="high" />
+            <img className="splash-logo" src="/brand/logo.png" alt="" draggable={false} fetchPriority="high" />
           </div>
           <h1 className="splash-title">Skypay</h1>
         </div>
@@ -135,7 +134,7 @@ export default function AppSplash({ onFinish }: { onFinish?: () => void }) {
               <div className="card-texture" aria-hidden="true" />
               <div className="card-fold" aria-hidden="true" />
               <div className="logo-tile">
-                <CachedImage src={APP_LOGO} fallbackSrc={APP_LOGO_FALLBACK} cacheKey="app-logo-v2" alt="Skypay" draggable={false} />
+                <img src="/brand/logo.png" alt="ComePay" className="w-24 h-auto object-contain" fetchPriority="high" decoding="sync" loading="eager" draggable={false} />
               </div>
             </div>
           </div>

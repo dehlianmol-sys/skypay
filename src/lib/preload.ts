@@ -56,7 +56,7 @@ export function preloadCriticalImages(): Promise<void> {
   const cardArt = Object.values(TEMPLATES).flatMap((byStatus) =>
     Object.values(byStatus).map((template) => template.url),
   );
-  const critical = preloadImages([APP_LOGO, ...cardArt, ...TX_IMAGE_URLS, '/ui/loading-wave.png']);
+  const critical = preloadImages(['/brand/logo.png', APP_LOGO, ...cardArt, ...TX_IMAGE_URLS, '/ui/loading-wave.png']);
   critical.then(() => { void preloadAppImages(); }).catch(() => undefined);
   return critical;
 }
